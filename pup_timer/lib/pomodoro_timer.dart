@@ -10,9 +10,11 @@ class PomodoroTimer extends StatefulWidget {
 }
 
 class _PomodoroTimerState extends State<PomodoroTimer> {
-  int _sliderValue = 25;
+  int _sliderValue = 0;
   int _remainingTime = 0;
   Timer? _timer;
+  final List<String> _timerTypes = ['study', 'work', 'exercise', 'social', 'relax'];
+  String _selectedTimerType = 'study';
 
   @override
   void initState() {
@@ -51,12 +53,13 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Pomodoro Timer',
+      title: 'PupTimer',
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Pomodoro Timer'),
+          title: Text('PupTimer'),
         ),
-        body: Center(
+        body:
+        Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -64,7 +67,12 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                 min: 0,
                 max: 120,
                 initialValue: _sliderValue.toDouble(),
-                onChangeEnd: (value) {
+                appearance: CircularSliderAppearance(
+                  customColors: CustomSliderColors(trackColor: Colors.amberAccent,progressBarColors:
+                  [Colors.orange, Colors.yellowAccent],shadowColor:Colors.limeAccent,shadowMaxOpacity: 20.0),
+                  infoProperties: InfoProperties(topLabelText: 'Running..'),
+                ),
+              onChangeEnd: (value) {
                   if (_timer == null) {
                     setState(() {
                       _sliderValue = value.toInt();
@@ -72,13 +80,34 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
                     });
                   }
                 },
+                innerWidget: (double value) {
+                  return Center(
+                    child: Text(
+                      _displayTime,
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.orange,
+                      ),
+                    ),
+                  );
+                },
               ),
               SizedBox(height: 32.0),
-              Text(
-                _displayTime,
-                style: TextStyle(fontSize: 64.0),
+              DropdownButton<String>(
+                value: _selectedTimerType,
+                onChanged: (value) {
+                  setState(() {
+                    _selectedTimerType = value!;
+                  });
+                },
+                items: _timerTypes.map((timerType) {
+                  return DropdownMenuItem<String>(
+                    value: timerType,
+                    child: Text(timerType),
+                  );
+                }).toList(),
               ),
-              SizedBox(height: 32.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
