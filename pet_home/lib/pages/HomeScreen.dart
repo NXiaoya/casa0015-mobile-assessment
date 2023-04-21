@@ -20,7 +20,12 @@ class _HomeScreenState extends State<HomeScreen> {
     return AnimatedContainer(
         transform: Matrix4.translationValues(xOffset, yOffset, 0),
       duration: Duration(milliseconds: 250),
-      color: Colors.yellow.shade100,
+      decoration: BoxDecoration(
+          color: Colors.grey[200],
+
+          borderRadius: BorderRadius.circular(isDrawerOpen?40:0.0)
+
+      ),
       child: Column(
         children: [
           SizedBox(height: 60,),
@@ -82,6 +87,72 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
              )
           ),
+          Container(
+            height: 120,
+            child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: categories.length,
+                itemBuilder: (context,index){
+                  return Container(
+                    child: Column(
+                      children: [
+                        Container(
+
+                          padding: EdgeInsets.all(10),
+                          margin: EdgeInsets.only(left: 20),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              boxShadow: shadowList,
+                              borderRadius: BorderRadius.circular(10)
+                          ),
+                          child: Image.asset(categories[index]['iconPath'],
+                            height: 40,
+                            width: 150,
+                            color: Colors.grey[700],
+                          ),
+                        ),
+                        Text(categories[index]['name'])
+                      ],
+                    ),
+                  );
+                }
+            ),
+          ),
+          Container(
+            height: 240,
+              margin: EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Stack(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(color: Colors.orange[100],
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: shadowList,
+                          ),
+                          margin: EdgeInsets.only(top: 40,bottom: 10),
+                        ),
+                         Align(
+                           child: Image.asset('images/petcat1.png'),
+                         )
+                      ],
+                    ),
+                  ),
+                  Expanded(child: Container(
+                    margin: EdgeInsets.only(top: 60,bottom: 20),
+                    decoration: BoxDecoration(color: Colors.white,
+                    boxShadow: shadowList,
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                    )),
+
+                  ))
+                ],
+              ),
+          )
+
         ],
       ),
     );

@@ -6,7 +6,7 @@ import 'package:pet_home/pages/HomeScreen.dart';
 void main(){
   runApp(MaterialApp(home: HomePage(),
     theme: ThemeData(
-        fontFamily: 'Circular'
+        fontFamily: 'Circular',
     ),
   ));
 }
