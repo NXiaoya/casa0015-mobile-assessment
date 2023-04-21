@@ -38,7 +38,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             yOffset=0;
                             scaleFactor=1;
                             isDrawerOpen=false;
-
                           });
                         },
 
@@ -66,7 +65,23 @@ class _HomeScreenState extends State<HomeScreen> {
                       CircleAvatar()
                     ],
                   )
-          )
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+            margin: EdgeInsets.symmetric(vertical: 15,horizontal: 10),
+            decoration: BoxDecoration(
+                color: Colors.yellow.shade50,
+                borderRadius: BorderRadius.circular(20)
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Icon(Icons.search),
+                Text('Search pet to adopt'),
+                Icon(Icons.settings)
+              ],
+             )
+          ),
         ],
       ),
     );
