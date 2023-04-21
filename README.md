@@ -1,4 +1,4 @@
-# PupTimer
+# PetHome
 
 This is the Final assessment template for CASA0014 - Please use this template and edit the relevant sections to personalise.
 This section has a short introduction to what the application is
