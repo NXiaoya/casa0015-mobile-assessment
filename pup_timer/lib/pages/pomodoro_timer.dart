@@ -1,8 +1,9 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
+
+import 'dart:async';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
-void main() => runApp(PomodoroTimer());
+
 
 class PomodoroTimer extends StatefulWidget {
   @override
@@ -57,6 +58,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
       home: Scaffold(
         appBar: AppBar(
           title: Text('PupTimer'),
+          backgroundColor: Colors.amberAccent,
         ),
         body:
         Center(
