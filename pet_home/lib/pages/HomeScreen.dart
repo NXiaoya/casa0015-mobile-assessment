@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pet_home/configuration.dart';
+
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -7,49 +9,66 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  double xOffset = 0;
+  double yOffset = 0;
+  double scaleFactor = 1;
 
-  double xOffset =0;
-  double yOffset =0;
-  double scaleFactor =1;
-
+  bool isDrawerOpen = false;
 
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      transform: Matrix4.translationValues(xOffset, yOffset, 0)..scale(scaleFactor),
-
+        transform: Matrix4.translationValues(xOffset, yOffset, 0),
       duration: Duration(milliseconds: 250),
-      color: Colors.white,
+      color: Colors.yellow.shade100,
       child: Column(
-        children:[
+        children: [
           SizedBox(height: 60,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(icon: Icon(Icons.menu), onPressed:(){
-                setState(() {
-                  xOffset =230;
-                  yOffset=150;
-                  scaleFactor=0.6;
-                });
-              }),
-              Column(
-                children: [
-                  Text('Location'),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 20),
+            child:
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Icon(Icons.location_on,color: amber,),
-                      Text('London'),
+                      isDrawerOpen?IconButton(
+                        icon: Icon(Icons.arrow_back_ios),
+                        onPressed: (){
+                          setState(() {
+                            xOffset=0;
+                            yOffset=0;
+                            scaleFactor=1;
+                            isDrawerOpen=false;
+
+                          });
+                        },
+
+                      ): IconButton(
+                          icon: Icon(Icons.menu),
+                          onPressed: () {
+                            setState(() {
+                              xOffset = 230;
+                              yOffset = 150;
+                              scaleFactor = 0.6;
+                              isDrawerOpen=true;
+                            });
+                          }),
+                      Column(
+                        children: [
+                          Text('Location'),
+                          Row(
+                            children: [
+                              Icon(Icons.location_on,color: amber,),
+                              Text('London'),
+                            ],
+                          )
+                        ],
+                      ),
+                      CircleAvatar()
                     ],
                   )
-                ],
-              ),
-              CircleAvatar()
-            ],
           )
-        ]
+        ],
       ),
     );
-
   }
 }
