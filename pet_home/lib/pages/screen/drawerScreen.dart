@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:pet_home/services/auth.dart';
 import 'package:pet_home/configuration.dart';
+import 'package:pet_home/pages/screen/donation.dart';
+import 'package:pet_home/pages/screen/favorites.dart';
+import 'package:pet_home/pages/screen/Profile.dart';
+import 'package:pet_home/pages/screen/adoption.dart';
+import 'package:pet_home/pages/screen/HomeScreen.dart';
+
 
 class drawerScreen extends StatefulWidget {
   @override
@@ -9,57 +15,43 @@ class drawerScreen extends StatefulWidget {
 
 class _drawerScreenState extends State<drawerScreen> {
   final AuthService _auth = AuthService();
+  bool loading = false;
+
+
   @override
   Widget build(BuildContext context) {
-    return Container(
+
+    return loading ? Loading() : Container(
       color: amber,
-      padding: EdgeInsets.only(top: 50, bottom: 70, left: 10),
+      padding: EdgeInsets.only(top: 220, bottom: 70, left: 10),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            children: [
-              CircleAvatar(),
-              SizedBox(
-                width: 10,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Lucy',
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
-                  ),
-                  Text('Active Status',
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold))
-                ],
-              )
-            ],
-          ),
           Column(
             children: drawerItems
-                .map((element) => Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Row(
-                        children: [
-                          Icon(
-                            element['icon'],
-                            color: Colors.white,
-                            size: 30,
-                          ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Text(element['title'],
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20))
-                        ],
+                .map((element) =>
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Row(
+                    children: [
+                      IconButton(
+                        icon:Icon(element['icon']),
+                        color: Colors.white,
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>element['direction']));
+                        },
                       ),
-                    ))
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Text(element['title'],
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20)),
+                    ],
+                  ),
+                ))
                 .toList(),
           ),
           Row(
@@ -76,22 +68,19 @@ class _drawerScreenState extends State<drawerScreen> {
                 width: 10,
               ),
 
-                TextButton.icon(
-                  icon: Icon(Icons.person),
-                  label: Text('logout'),
-                  onPressed: () async {
-                    await _auth.signOut();
-                  },
-                ),
-              ],
-              // Text(
-              //   'Log out',
-              //   style:
-              //       TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              // )
+              TextButton.icon(
+                icon: Icon(Icons.person),
+                label: Text('logout'),
+                onPressed: () async {
+                  setState(() => loading = true);
+                  await _auth.signOut();
+                },
+              ),
+            ],
           )
         ],
       ),
     );
   }
+
 }
