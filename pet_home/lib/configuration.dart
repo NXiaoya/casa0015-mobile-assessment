@@ -11,4 +11,22 @@ List<Map> categories = [
   {'name': 'Dogs', 'iconPath': 'images/dog.png'},
 ];
 
+List<Map> drawerItems=[
+  {
+    'icon': Icons.add_box_outlined,
+    'title' : 'Donation'
+  },
+  {
+    'icon': Icons.home,
+    'title' : 'Adoption'
+  },
+  {
+    'icon': Icons.favorite,
+    'title' : 'Favorites'
+  },
+  {
+    'icon': Icons.person,
+    'title' : 'Profile'
+  },
+];
 
