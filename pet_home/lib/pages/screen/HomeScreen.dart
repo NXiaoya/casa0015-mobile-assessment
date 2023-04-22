@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pet_home/pages/detailScreen.dart';
+import 'package:pet_home/pages/screen/detailScreen.dart';
 import 'package:pet_home/configuration.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -9,10 +9,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  //offset to show the drawer
   double xOffset = 0;
   double yOffset = 0;
   double scaleFactor = 1;
-
+  //check drawer open
   bool isDrawerOpen = false;
 
   @override
@@ -23,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
       decoration: BoxDecoration(
           color: Colors.yellow.shade100,
           borderRadius: BorderRadius.circular(isDrawerOpen ? 40 : 0.0)),
+      //allow page scroll
       child: SingleChildScrollView(
         child: Column(
           children: [
@@ -31,11 +33,12 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             Container(
                 margin: EdgeInsets.symmetric(horizontal: 20),
+                //top bar
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    isDrawerOpen
-                        ? IconButton(
+                    //drawer button
+                    isDrawerOpen ? IconButton(
                             icon: Icon(Icons.arrow_back_ios),
                             onPressed: () {
                               setState(() {
@@ -56,6 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 isDrawerOpen = true;
                               });
                             }),
+                    //location ui
                     Column(
                       children: [
                         Text('Location'),
@@ -70,9 +74,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         )
                       ],
                     ),
+                    //user profile pic
                     CircleAvatar()
                   ],
                 )),
+            //search bar
             Container(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 margin: EdgeInsets.symmetric(vertical: 15, horizontal: 10),

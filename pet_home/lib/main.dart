@@ -1,29 +1,27 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:pet_home/pages/wrapper.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:pet_home/services/auth.dart';
+import 'package:provider/provider.dart';
+import 'package:pet_home/models/user.dart';
 
-import 'package:pet_home/pages/drawerScreen.dart';
-import 'package:pet_home/pages/HomeScreen.dart';
-
-void main(){
-  runApp(MaterialApp(home: HomePage(),
-    theme: ThemeData(
-        fontFamily: 'Circular',
-    ),
-  ));
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
 }
 
-
-class HomePage extends StatelessWidget {
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          drawerScreen(),
-          HomeScreen()
-
-        ],
+    return StreamProvider<currentUser?>.value(
+      value: AuthService().user,
+      initialData: null,
+      child: MaterialApp(
+        home: Wrapper(),
       ),
-
     );
   }
-  }
+}
