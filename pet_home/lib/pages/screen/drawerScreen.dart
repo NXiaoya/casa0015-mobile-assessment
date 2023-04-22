@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pet_home/services/auth.dart';
 import 'package:pet_home/configuration.dart';
 
 class drawerScreen extends StatefulWidget {
@@ -7,6 +8,7 @@ class drawerScreen extends StatefulWidget {
 }
 
 class _drawerScreenState extends State<drawerScreen> {
+  final AuthService _auth = AuthService();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -73,12 +75,20 @@ class _drawerScreenState extends State<drawerScreen> {
               SizedBox(
                 width: 10,
               ),
-              Text(
-                'Log out',
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              )
-            ],
+
+                TextButton.icon(
+                  icon: Icon(Icons.person),
+                  label: Text('logout'),
+                  onPressed: () async {
+                    await _auth.signOut();
+                  },
+                ),
+              ],
+              // Text(
+              //   'Log out',
+              //   style:
+              //       TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              // )
           )
         ],
       ),

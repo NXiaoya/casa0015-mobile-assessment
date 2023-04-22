@@ -10,7 +10,7 @@ class Wrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final user = Provider.of<currentUser>(context);
+    final user = Provider.of<currentUser?>(context);
     print(user);
 
     if (user == null){
