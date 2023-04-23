@@ -4,7 +4,6 @@ import 'package:pet_home/configuration.dart';
 import 'package:pet_home/pages/screen/donation.dart';
 import 'package:pet_home/pages/screen/favorites.dart';
 import 'package:pet_home/pages/screen/Profile.dart';
-import 'package:pet_home/pages/screen/adoption.dart';
 import 'package:pet_home/pages/screen/HomeScreen.dart';
 
 class drawerScreen extends StatefulWidget {

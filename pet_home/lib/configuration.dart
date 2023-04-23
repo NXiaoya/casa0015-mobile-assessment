@@ -5,7 +5,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:pet_home/pages/screen/donation.dart';
 import 'package:pet_home/pages/screen/favorites.dart';
 import 'package:pet_home/pages/screen/Profile.dart';
-import 'package:pet_home/pages/screen/adoption.dart';
 import 'package:pet_home/pages/screen/HomeScreen.dart';
 
 Color amber = Colors.amber;
@@ -26,11 +25,6 @@ List<Map> drawerItems=[
     'icon': Icons.add_box_outlined,
     'title' : 'Donation',
     'direction': donation(),
-  },
-  {
-    'icon': Icons.home,
-    'title' : 'Adoption',
-    'direction': adoption(),
   },
   {
     'icon': Icons.favorite,
