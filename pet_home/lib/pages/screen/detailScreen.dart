@@ -44,7 +44,6 @@ class detailScreen extends StatelessWidget {
                   IconButton(
                     icon: Icon(Icons.arrow_back_ios),
                     onPressed: () {
-                      Navigator.pop(context);
                     },
                   ),
                   IconButton(

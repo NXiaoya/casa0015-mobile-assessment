@@ -9,6 +9,8 @@ import 'package:pet_home/configuration.dart';
 import 'package:pet_home/pages/screen/Profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pet_home/services/auth.dart';
+import 'package:bordered_text/bordered_text.dart';
+import 'package:pet_home/pages/screen/DescendantPage/adoption_detail.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -54,7 +56,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       drawer: Drawer(
         child: ListView(
-          // Important: Remove any padding from the ListView.
           padding: EdgeInsets.zero,
           children: [
             SizedBox(
@@ -63,11 +64,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     image: DecorationImage(image: AssetImage('images/logo.png')),
                     color: Colors.amber,
                   ),
+                  child:  BorderedText(
+                  strokeWidth: 10.0,
+                  strokeColor: Colors.orange,
                   child: Text(
-                    'Pet Home',
-                    style: TextStyle(color: Colors.white, fontSize: 40),
-                    textAlign: TextAlign.center,
-                  )),
+                  'Pet Home',
+                  style: TextStyle(color: Colors.white,
+                  decoration: TextDecoration.none,
+                  decorationColor: Colors.amber,fontSize: 40
+                  ),
+                  ),))
             ),
             Container(
               color: Colors.yellow.shade100,
@@ -165,8 +171,19 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 )),
+            BorderedText(
+              strokeWidth: 5.0,
+              strokeColor: Colors.orange,
+              child: Text(
+                'Scroll and click to find your new family member',
+                style: TextStyle(
+                    color: Colors.white,
+                    decoration: TextDecoration.none,
+                    decorationColor: Colors.amber,
+                    fontSize: 15),
+              ),
+            ),
             Container(
-              //search bar
               child: Expanded(
                 child: StreamBuilder<QuerySnapshot>(
                   stream: _stream,
@@ -183,9 +200,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       List<QueryDocumentSnapshot> documents =
                           querySnapshot.docs;
 
-                      //Convert the documents to Maps
-                      List<Map> items =
-                          documents.map((e) => e.data() as Map).toList();
+                      List<Map> items = documents.map((e) => {
+                        'id': e.id,
+                        'name': e['name'],
+                        'gender': e['gender'],
+                        'breed': e['breed'],
+                        'age': e['age'],
+                        'location': e['location'],
+                        'image':e['image']
+                      }).toList();
 
                       //Display the list
                       return ListView.builder(
@@ -195,20 +218,19 @@ class _HomeScreenState extends State<HomeScreen> {
                             Map thisItem = items[index];
                             //REturn the widget for the list items
                             return ListTile(
+                              contentPadding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 16.0),
                               title: Text('${thisItem['name']}'),
                               subtitle: Text(
-                                'Gender: ${thisItem['gender']}',
+                                'Breed: ${thisItem['breed']}',
                               ),
                               leading: Container(
-                                height: 80,
+                                height: 100,
                                 width: 80,
-                                child: thisItem.containsKey('image')
-                                    ? Image.network('${thisItem['image']}')
-                                    : Container(),
+                                child: Image.network('${thisItem['image']}'),
                               ),
                               onTap: () {
-                                // Navigator.of(context).push(MaterialPageRoute(
-                                //     builder: (context) => ItemDetails(thisItem['id'])));
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => AdoptionDetails(thisItem['id'])));
                               },
                             );
                           });
@@ -224,13 +246,6 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     ); //Display a list // Add a FutureBuilder]
-    // floatingActionButton: FloatingActionButton(
-    //   onPressed: () {
-    //     Navigator.of(context)
-    //         .push(MaterialPageRoute(builder: (context) => HomeScreen()));
-    //   },
-    //   tooltip: 'Increment',
-    //   child: const Icon(Icons.add),
-    // ),
+
   }
 }
