@@ -54,7 +54,7 @@ class _donationState extends State<donation> {
                     shape: BoxShape.circle,
                     image: DecorationImage(
                         fit: BoxFit.cover,
-                        image: NetworkImage(imageUrl)
+                        image:  imageUrl.isNotEmpty ? NetworkImage(imageUrl) : AssetImage('images/logo.png') as ImageProvider,
                     )),
               ),
               Align(

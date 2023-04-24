@@ -1,5 +1,5 @@
 import 'package:pet_home/models/userProfile.dart';
-import 'package:pet_home/pages/screen/user_tile.dart';
+import 'package:pet_home/pages/screen/DescendantPage/user_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

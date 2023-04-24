@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:pet_home/services/database.dart';
 import 'package:provider/provider.dart';
-import 'package:pet_home/pages/screen/settings_profile.dart';
+import 'package:pet_home/pages/screen/DescendantPage/settings_profile.dart';
 import 'package:pet_home/configuration.dart';
 import 'package:pet_home/models/user.dart';
 

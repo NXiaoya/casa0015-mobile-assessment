@@ -1,137 +1,229 @@
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:pet_home/pages/screen/detailScreen.dart';
 import 'package:pet_home/configuration.dart';
-//import 'package:image_picker/image_picker.dart';
-import 'dart:io';
+import 'package:pet_home/pages/screen/Profile.dart';
+//import 'package:pet_home/pages/screen/pet_list.dart';
 
-class donation extends StatefulWidget {
+class HomeScreen extends StatefulWidget {
   @override
-  _donationPageState createState() => _donationPageState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _donationPageState extends State<donation> {
-
-  GlobalKey<FormState> key = GlobalKey();
+class _HomeScreenState extends State<HomeScreen> {
+  //offset to show the drawer
+  double xOffset = 0;
+  double yOffset = 0;
+  double scaleFactor = 1;
+  //check drawer open
+  bool isDrawerOpen = false;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          Positioned.fill(
+    return Stack(
+        children:[
+          // Container(
+          //   width: double.infinity,
+          //   height: double.infinity,
+          //   color: Colors.yellow.shade100, // or use an image with AssetImage()
+          // ),
+          AnimatedContainer(
+            transform: Matrix4.translationValues(xOffset, yOffset, 0),
+            duration: Duration(milliseconds: 250),
+            decoration: BoxDecoration(
+                color: Colors.yellow.shade100,
+                borderRadius: BorderRadius.circular(isDrawerOpen ? 40 : 0.0)),
+            //allow page scroll
+            child: SingleChildScrollView(
               child: Column(
                 children: [
-                  Expanded(
+                  SizedBox(
+                    height: 60,
+                  ),
+                  Container(
+                      margin: EdgeInsets.symmetric(horizontal: 20),
+                      //top bar
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          //drawer button
+                          isDrawerOpen ? IconButton(
+                            icon: Icon(Icons.arrow_back_ios),
+                            onPressed: () {
+                              setState(() {
+                                xOffset = 0;
+                                yOffset = 0;
+                                scaleFactor = 1;
+                                isDrawerOpen = false;
+                              });
+                            },
+                          )
+                              : IconButton(
+                              icon: Icon(Icons.menu),
+                              onPressed: () {
+                                setState(() {
+                                  xOffset = 230;
+                                  yOffset = 150;
+                                  scaleFactor = 0.6;
+                                  isDrawerOpen = true;
+                                });
+                              }),
+                          //location ui
+                          Column(
+                            children: [
+                              Text('Take Me Home'),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.pets,
+                                    color: amber,
+                                  ),
+                                  Text('Find your new family member'),
+                                ],
+                              )
+                            ],
+                          ),
+                          //user profile pic
+                          IconButton(icon: Icon(Icons.person),
+                            onPressed: (){
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Profile()));
+                            },)
+                        ],
+                      )),
+                  //search bar
+                  Container(
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      margin: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                      decoration: BoxDecoration(
+                          color: Colors.yellow.shade50,
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Row(
+                        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Icon(Icons.search),
+                          Text('Search pet to adopt',textAlign: TextAlign.center,),
+                        ],
+                      )),
+                  Positioned.fill(
                     child: Container(
-                      color: Colors.amberAccent.shade100,
+                      height: 120,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: categories.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              child: Column(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(10),
+                                    margin: EdgeInsets.only(left: 20),
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        boxShadow: shadowList,
+                                        borderRadius: BorderRadius.circular(10)),
+                                    child: Image.asset(
+                                      categories[index]['iconPath'],
+                                      height: 40,
+                                      width: 150,
+                                      color: Colors.grey[700],
+                                    ),
+                                  ),
+                                  Text(categories[index]['name'])
+                                ],
+                              ),
+                            );
+                          }),
                     ),
                   ),
-                  Expanded(
-                      child: Container(
-                        color: Colors.white,
-                      )),
-                ],
-              )),
-          Container(
-            margin: EdgeInsets.only(top: 30),
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: Hero(
-                tag: 1,
-                child: Image.asset(
-                  'images/petcat1.png',
-                  height: 400,
-                ),
-              ),
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 50),
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.arrow_back_ios),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.ios_share_outlined),
-                    onPressed: () {},
-                  )
-                ],
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 20),
-              height: 350,
-              decoration: BoxDecoration(
-                  color: Colors.amber.shade100,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30))),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text(
-                        'Add a cute picture:',
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.camera_alt,
-                          size: 30,
-                        ),
-                        onPressed: () async {
-                        },
-                      )
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                          child: Container(
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: Colors.amberAccent.shade400,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: TextButton.icon(
-                              icon: Icon(
-                                Icons.pets,
-                                color: Colors.white,
-                              ),
-                              label: Text(
-                                'Help me find a home',
-                                style: TextStyle(color: Colors.white, fontSize: 20),
-                              ),
-                              onPressed: () async {},
-                            ),
-                          )),
-                      SizedBox(
-                        width: 10,
-                      ),
-                    ],
-                  ),
+                  //ItemList(),
+                  // GestureDetector(
+                  //   onTap: (){
+                  //     Navigator.push(context, MaterialPageRoute(builder: (context)=>detailScreen()));
+                  //   },
+                  //   child: Container(
+                  //     height: 240,
+                  //     margin: EdgeInsets.symmetric(horizontal: 20),
+                  //     child: Row(
+                  //       children: [
+                  //         Expanded(
+                  //           child: Stack(
+                  //             children: [
+                  //               Container(
+                  //                 decoration: BoxDecoration(
+                  //                   color: Colors.amber.shade100,
+                  //                   borderRadius: BorderRadius.circular(20),
+                  //                   boxShadow: shadowList,
+                  //                 ),
+                  //                 margin: EdgeInsets.only(top: 40, bottom: 10),
+                  //               ),
+                  //               Align(
+                  //                 child: Hero(
+                  //                   tag: 1,
+                  //                     child: Image.asset('images/petcat1.png')),
+                  //               )
+                  //             ],
+                  //           ),
+                  //         ),
+                  //         Expanded(
+                  //             child: Container(
+                  //           margin: EdgeInsets.only(top: 60, bottom: 20),
+                  //           decoration: BoxDecoration(
+                  //               color: Colors.white,
+                  //               boxShadow: shadowList,
+                  //               borderRadius: BorderRadius.only(
+                  //                 topRight: Radius.circular(20),
+                  //                 bottomRight: Radius.circular(20),
+                  //               )),
+                  //         ))
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
+                  // Container(
+                  //   height: 240,
+                  //   margin: EdgeInsets.symmetric(horizontal: 20),
+                  //   child: Row(
+                  //     children: [
+                  //       Expanded(
+                  //         child: Stack(
+                  //           children: [
+                  //             Container(
+                  //               decoration: BoxDecoration(
+                  //                 color: Colors.orange[100],
+                  //                 borderRadius: BorderRadius.circular(20),
+                  //                 boxShadow: shadowList,
+                  //               ),
+                  //               margin: EdgeInsets.only(top: 40, bottom: 10),
+                  //             ),
+                  //             Align(
+                  //               child: Image.asset('images/petcat2.png'),
+                  //             )
+                  //           ],
+                  //         ),
+                  //       ),
+                  //       Expanded(
+                  //           child: Container(
+                  //         margin: EdgeInsets.only(top: 60, bottom: 20),
+                  //         decoration: BoxDecoration(
+                  //             color: Colors.white,
+                  //             boxShadow: shadowList,
+                  //             borderRadius: BorderRadius.only(
+                  //               topRight: Radius.circular(20),
+                  //               bottomRight: Radius.circular(20),
+                  //             )),
+                  //       ))
+                  //     ],
+                  //   ),
+                  // ),
+                  SizedBox(height: 50,)
                 ],
               ),
             ),
-          )
-        ],
-      ),
+          ),]
     );
   }
 }

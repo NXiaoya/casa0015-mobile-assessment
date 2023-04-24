@@ -1,91 +1,153 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:pet_home/pages/screen/HomeScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pet_home/pages/screen/detailScreen.dart';
 import 'package:pet_home/configuration.dart';
 import 'package:pet_home/pages/screen/Profile.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pet_home/services/auth.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  //offset to show the drawer
-  double xOffset = 0;
-  double yOffset = 0;
-  double scaleFactor = 1;
-  //check drawer open
+  CollectionReference _reference =
+      FirebaseFirestore.instance.collection('donate_pet_info');
+
+  late Stream<QuerySnapshot> _stream;
+
+  // Declare isDrawerOpen as a member variable
   bool isDrawerOpen = false;
+  final AuthService _auth = AuthService();
+
+  @override
+  void initState() {
+    super.initState();
+    _stream = _reference.snapshots();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedContainer(
-      transform: Matrix4.translationValues(xOffset, yOffset, 0),
-      duration: Duration(milliseconds: 250),
-      decoration: BoxDecoration(
-          color: Colors.yellow.shade100,
-          borderRadius: BorderRadius.circular(isDrawerOpen ? 40 : 0.0)),
-      //allow page scroll
-      child: SingleChildScrollView(
-        child: Column(
+    //offset to show the drawer
+
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text(
+          'Help me find a home',
+        ),
+        backgroundColor: Colors.amber,
+        actions: [IconButton(
+            icon: Icon(Icons.person),
+          onPressed: (){
+            Navigator.of(context)
+                   .push(MaterialPageRoute(builder: (context) => Profile()));
+          },
+        )],
+      ),
+      drawer: Drawer(
+        child: ListView(
+          // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.zero,
           children: [
             SizedBox(
-              height: 60,
+              child: DrawerHeader(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(image: AssetImage('images/logo.png')),
+                    color: Colors.amber,
+                  ),
+                  child: Text(
+                    'Pet Home',
+                    style: TextStyle(color: Colors.white, fontSize: 40),
+                    textAlign: TextAlign.center,
+                  )),
             ),
             Container(
-                margin: EdgeInsets.symmetric(horizontal: 20),
-                //top bar
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    //drawer button
-                    isDrawerOpen ? IconButton(
-                            icon: Icon(Icons.arrow_back_ios),
-                            onPressed: () {
-                              setState(() {
-                                xOffset = 0;
-                                yOffset = 0;
-                                scaleFactor = 1;
-                                isDrawerOpen = false;
-                              });
-                            },
-                          )
-                        : IconButton(
-                            icon: Icon(Icons.menu),
-                            onPressed: () {
-                              setState(() {
-                                xOffset = 230;
-                                yOffset = 150;
-                                scaleFactor = 0.6;
-                                isDrawerOpen = true;
-                              });
-                            }),
-                    //location ui
-                    Column(
-                      children: [
-                        Text('Take Me Home'),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.pets,
-                              color: amber,
-                            ),
-                            Text('Find your new family member'),
-                          ],
-                        )
-                      ],
-                    ),
-                    //user profile pic
-                    IconButton(icon: Icon(Icons.person),
-                    onPressed: (){
-                      Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                      builder: (context) => Profile()));
-                    },)
-                  ],
-                )),
+              color: Colors.yellow.shade100,
+              padding: EdgeInsets.only(top: 120, bottom: 130, left: 10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: drawerItems
+                        .map((element) => Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Row(
+                                children: [
+                                  ElevatedButton.icon(
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                Colors.amber),
+                                      ),
+                                      icon: Icon(
+                                        element['icon'],
+                                        size: 30,
+                                      ),
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    element['direction']));
+                                      },
+                                      label: Text(
+                                        element['title'],
+                                        style: TextStyle(fontSize: 20),
+                                      )),
+                                ],
+                              ),
+                            ))
+                        .toList(),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Container(
+                        width: 3,
+                        height: 24,
+                        color: Colors.amber,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      TextButton.icon(
+                        icon: Icon(
+                          Icons.person,
+                          color: Colors.amber,
+                          size: 24,
+                        ),
+                        label: Text(
+                          'logout',
+                          style: TextStyle(color: Colors.amber, fontSize: 24),
+                        ),
+                        onPressed: () async {
+                          await _auth.signOut();
+                        },
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+      body: Center(
+        child: Column(
+          children: [
             //search bar
             Container(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -94,125 +156,81 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: Colors.yellow.shade50,
                     borderRadius: BorderRadius.circular(20)),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Icon(Icons.search),
-                    Text('Search pet to adopt'),
-                    Icon(Icons.settings)
+                    Text(
+                      'Search pet to adopt',
+                      textAlign: TextAlign.center,
+                    ),
                   ],
                 )),
             Container(
-              height: 120,
-              child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: categories.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      child: Column(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            margin: EdgeInsets.only(left: 20),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                boxShadow: shadowList,
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Image.asset(
-                              categories[index]['iconPath'],
-                              height: 40,
-                              width: 150,
-                              color: Colors.grey[700],
-                            ),
-                          ),
-                          Text(categories[index]['name'])
-                        ],
-                      ),
-                    );
-                  }),
-            ),
-            GestureDetector(
-              onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>detailScreen()));
-              },
-              child: Container(
-                height: 240,
-                margin: EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Stack(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Colors.amber.shade100,
-                              borderRadius: BorderRadius.circular(20),
-                              boxShadow: shadowList,
-                            ),
-                            margin: EdgeInsets.only(top: 40, bottom: 10),
-                          ),
-                          Align(
-                            child: Hero(
-                              tag: 1,
-                                child: Image.asset('images/petcat1.png')),
-                          )
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                        child: Container(
-                      margin: EdgeInsets.only(top: 60, bottom: 20),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          boxShadow: shadowList,
-                          borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(20),
-                            bottomRight: Radius.circular(20),
-                          )),
-                    ))
-                  ],
+              //search bar
+              child: Expanded(
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: _stream,
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    //Check error
+                    if (snapshot.hasError) {
+                      return Center(
+                          child: Text('Some error occurred ${snapshot.error}'));
+                    }
+                    //Check if data arrived
+                    if (snapshot.hasData) {
+                      //get the data
+                      QuerySnapshot querySnapshot = snapshot.data;
+                      List<QueryDocumentSnapshot> documents =
+                          querySnapshot.docs;
+
+                      //Convert the documents to Maps
+                      List<Map> items =
+                          documents.map((e) => e.data() as Map).toList();
+
+                      //Display the list
+                      return ListView.builder(
+                          itemCount: items.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            //Get the item at this index
+                            Map thisItem = items[index];
+                            //REturn the widget for the list items
+                            return ListTile(
+                              title: Text('${thisItem['name']}'),
+                              subtitle: Text(
+                                'Gender: ${thisItem['gender']}',
+                              ),
+                              leading: Container(
+                                height: 80,
+                                width: 80,
+                                child: thisItem.containsKey('image')
+                                    ? Image.network('${thisItem['image']}')
+                                    : Container(),
+                              ),
+                              onTap: () {
+                                // Navigator.of(context).push(MaterialPageRoute(
+                                //     builder: (context) => ItemDetails(thisItem['id'])));
+                              },
+                            );
+                          });
+                    }
+
+                    //Show loader
+                    return Center(child: CircularProgressIndicator());
+                  },
                 ),
               ),
             ),
-            Container(
-              height: 240,
-              margin: EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Stack(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.orange[100],
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: shadowList,
-                          ),
-                          margin: EdgeInsets.only(top: 40, bottom: 10),
-                        ),
-                        Align(
-                          child: Image.asset('images/petcat2.png'),
-                        )
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                      child: Container(
-                    margin: EdgeInsets.only(top: 60, bottom: 20),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: shadowList,
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(20),
-                          bottomRight: Radius.circular(20),
-                        )),
-                  ))
-                ],
-              ),
-            ),
-            SizedBox(height: 50,)
           ],
         ),
       ),
-    );
+    ); //Display a list // Add a FutureBuilder]
+    // floatingActionButton: FloatingActionButton(
+    //   onPressed: () {
+    //     Navigator.of(context)
+    //         .push(MaterialPageRoute(builder: (context) => HomeScreen()));
+    //   },
+    //   tooltip: 'Increment',
+    //   child: const Icon(Icons.add),
+    // ),
   }
 }

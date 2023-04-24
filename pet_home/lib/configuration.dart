@@ -6,6 +6,7 @@ import 'package:pet_home/pages/screen/donation.dart';
 import 'package:pet_home/pages/screen/favorites.dart';
 import 'package:pet_home/pages/screen/Profile.dart';
 import 'package:pet_home/pages/screen/HomeScreen.dart';
+//import 'package:pet_home/pages/screen/pet_list.dart';
 
 Color amber = Colors.amber;
 
@@ -36,6 +37,11 @@ List<Map> drawerItems=[
     'title' : 'Profile',
     'direction': Profile(),
   },
+  // {
+  //   'icon': Icons.list_alt,
+  //   'title': 'Pet List',
+  //   'direction': ItemList(),
+  // }
 ];
 //Input decoration
 const textInputDecoration = InputDecoration(
