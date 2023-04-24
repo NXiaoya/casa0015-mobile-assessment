@@ -15,6 +15,7 @@ class _SettingsProfileState extends State<SettingsProfile> {
   final _formKey = GlobalKey<FormState>();
 
   // form values
+  String? _currentUid;
   String? _currentName;
   String? _currentContact;
   String? _currentLocation;
@@ -50,19 +51,6 @@ class _SettingsProfileState extends State<SettingsProfile> {
                   ),
                   SizedBox(height: 10.0),
                   Text(
-                    'Contact',
-                    style: TextStyle(fontSize: 15.0),
-                  ),
-                  SizedBox(height: 10.0),
-                  TextFormField(
-                    initialValue: userData.contact,
-                    decoration: textInputDecoration,
-                    validator: (val) =>
-                        val!.isEmpty ? 'Please enter your contact' : null,
-                    onChanged: (val) => setState(() => _currentContact = val),
-                  ),
-                  SizedBox(height: 10.0),
-                  Text(
                     'Location',
                     style: TextStyle(fontSize: 15.0),
                   ),
@@ -73,6 +61,18 @@ class _SettingsProfileState extends State<SettingsProfile> {
                     validator: (val) =>
                         val!.isEmpty ? 'Please enter your location' : null,
                     onChanged: (val) => setState(() => _currentLocation = val),
+                  ),
+                  SizedBox(height: 10.0),
+                  Text(
+                    'Contact',
+                    style: TextStyle(fontSize: 15.0),
+                  ),
+                  TextFormField(
+                    initialValue: userData.contact,
+                    decoration: textInputDecoration,
+                    validator: (val) =>
+                    val!.isEmpty ? 'Please enter your contact' : null,
+                    onChanged: (val) => setState(() => _currentContact = val),
                   ),
                   SizedBox(height: 10.0),
                   ElevatedButton(
@@ -86,9 +86,10 @@ class _SettingsProfileState extends State<SettingsProfile> {
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           await DatabaseService(uid: user.uid).updateUserData(
-                              _currentName ?? userData.name,
-                              _currentContact ?? userData.contact,
-                              _currentLocation ?? userData.location);
+                            _currentName ?? userData.name,
+                            _currentLocation ?? userData.location,
+                            _currentContact ?? userData.contact,
+                          );
                           Navigator.pop(context);
                         }
                       })

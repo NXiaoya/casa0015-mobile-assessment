@@ -16,8 +16,8 @@ class DatabaseService {
   Future updateUserData(String name, String location, String contact) async {
     return await profileCollection.doc(uid).set({
       'name': name,
-      'location': location,
       'contact': contact,
+      'location': location,
     });
   }
 
@@ -26,8 +26,8 @@ class DatabaseService {
     return snapshot.docs.map((doc) {
       return userProfile(
         name: doc.get('name') ?? '',
-        contact: doc.get('location') ?? '',
         location: doc.get('contact') ?? '',
+        contact: doc.get('location') ?? '',
       );
     }).toList();
   }
@@ -36,8 +36,9 @@ class DatabaseService {
     return UserData(
         uid: uid,
         name: snapshot.get('name'),
+        contact: snapshot.get('contact'),
         location: snapshot.get('location'),
-        contact: snapshot.get('contact')
+
     );
   }
   // get brews stream

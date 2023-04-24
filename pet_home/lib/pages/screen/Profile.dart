@@ -14,11 +14,6 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
 
-  // form values
-  late String _currentName;
-  late String _currentContact;
-  late String _currentLocation;
-
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<currentUser>(context);

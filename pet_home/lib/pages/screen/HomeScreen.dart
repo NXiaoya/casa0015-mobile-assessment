@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pet_home/pages/screen/detailScreen.dart';
 import 'package:pet_home/configuration.dart';
+import 'package:pet_home/pages/screen/Profile.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -75,7 +77,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                     //user profile pic
-                    CircleAvatar()
+                    IconButton(icon: Icon(Icons.person),
+                    onPressed: (){
+                      Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                      builder: (context) => Profile()));
+                    },)
                   ],
                 )),
             //search bar
