@@ -62,14 +62,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     //location ui
                     Column(
                       children: [
-                        Text('Location'),
+                        Text('Take Me Home'),
                         Row(
                           children: [
                             Icon(
-                              Icons.location_on,
+                              Icons.pets,
                               color: amber,
                             ),
-                            Text('London'),
+                            Text('Find your new family member'),
                           ],
                         )
                       ],
