@@ -64,10 +64,10 @@ class _SplashScreenState extends State<SplashScreen> {
                           color: Colors.white,
                           decoration: TextDecoration.none,
                           decorationColor: Colors.amber,
-                          fontSize: 30),
+                          fontSize: 20),
                     ),
                   ),
-                  Image(image: AssetImage('images/header.png'),),
+                  Image(image: AssetImage('images/icon2.png'),),
                 ],
               )),
 

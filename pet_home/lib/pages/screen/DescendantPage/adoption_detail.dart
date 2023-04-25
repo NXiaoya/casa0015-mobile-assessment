@@ -27,7 +27,7 @@ class AdoptionDetails extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
-          'My detail',
+          'Pet detail',
         ),
         backgroundColor: Colors.amber,
       ),

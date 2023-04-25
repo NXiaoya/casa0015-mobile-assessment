@@ -109,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         .toList(),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 60,
                   ),
                   Row(
                     children: [
@@ -185,7 +185,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     decorationColor: Colors.amber,
                     fontSize: 15),
               ),
-            ),
+            ),//Text with Decoration
             Container(
               child: Expanded(
                 child: StreamBuilder<QuerySnapshot>(
@@ -244,7 +244,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 ),
               ),
-            ),
+            ),//Pet Info List
           ],
         ),
       ),

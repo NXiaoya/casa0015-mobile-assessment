@@ -34,7 +34,7 @@ class _donationState extends State<donation> {
         actions: [
           Icon(Icons.pets),
         ],
-        title: Text('Pet Donation'),
+        title: Text('Add pet to adoption'),
       ),
       body: SingleChildScrollView(
         child: Container(

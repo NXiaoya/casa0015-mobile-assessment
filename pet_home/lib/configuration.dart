@@ -24,7 +24,7 @@ List<Map> categories = [
 List<Map> drawerItems=[
   {
     'icon': Icons.add_box_outlined,
-    'title' : 'Donation',
+    'title' : 'Add to adoption list',
     'direction': donation(),
   },
   {

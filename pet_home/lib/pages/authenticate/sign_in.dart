@@ -71,7 +71,7 @@ class _SignInState extends State<SignIn> {
                     onChanged: (val) {
                       setState(() => email = val);
                     },
-                  ),
+                  ),//enter email
                   SizedBox(height: 20.0),
                   TextFormField(
                     obscureText: true,
@@ -81,7 +81,7 @@ class _SignInState extends State<SignIn> {
                     onChanged: (val) {
                       setState(() => password = val);
                     },
-                  ),
+                  ),//enter password
                   SizedBox(height: 20.0),
                   ElevatedButton(
                       style: ButtonStyle(
