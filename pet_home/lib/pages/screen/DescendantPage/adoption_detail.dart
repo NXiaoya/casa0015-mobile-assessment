@@ -72,15 +72,16 @@ class AdoptionDetails extends StatelessWidget {
                                   ),
                                 ),
                               ),
+                              SizedBox(
+                                height: 20,
+                              ),
                               Align(
                                 alignment: Alignment.center,
                                 child: Container(
                                   margin: EdgeInsets.symmetric(horizontal: 20),
                                   decoration: BoxDecoration(
                                       color: Colors.amber.shade100,
-                                      borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(30),
-                                          topRight: Radius.circular(30))),
+                                      borderRadius: BorderRadius.all(Radius.circular(30))),
                                   child: Column(
                                     children: [
                                       SizedBox(
@@ -120,21 +121,6 @@ class AdoptionDetails extends StatelessWidget {
                                         strokeWidth: 5.0,
                                         strokeColor: Colors.orange,
                                         child: Text(
-                                          'I am a ${data['gender']}',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              decoration: TextDecoration.none,
-                                              decorationColor: Colors.amber,
-                                              fontSize: 20),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      BorderedText(
-                                        strokeWidth: 5.0,
-                                        strokeColor: Colors.orange,
-                                        child: Text(
                                           'I am a ${data['breed']}',
                                           style: TextStyle(
                                               color: Colors.white,
@@ -150,7 +136,7 @@ class AdoptionDetails extends StatelessWidget {
                                         strokeWidth: 5.0,
                                         strokeColor: Colors.orange,
                                         child: Text(
-                                          'I am now ${data['age']} years old',
+                                          'I am ${data['age']}-years-old ${data['gender']}',
                                           style: TextStyle(
                                               color: Colors.white,
                                               decoration: TextDecoration.none,

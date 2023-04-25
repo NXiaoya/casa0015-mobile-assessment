@@ -1,5 +1,5 @@
 
-import 'package:pet_home/pages/screen/drawerScreen.dart';
+
 import 'package:pet_home/pages/screen/HomeScreen.dart';
 import 'package:pet_home/models/user.dart';
 import 'package:pet_home/pages/authenticate/authenticate.dart';
@@ -19,8 +19,7 @@ class Wrapper extends StatelessWidget {
           return Scaffold(
           body: Stack(
             children: [
-              drawerScreen(),
-              HomeScreen(),
+           HomeScreen(),
             ],
           ),
 

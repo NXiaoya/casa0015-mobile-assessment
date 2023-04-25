@@ -1,13 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:pet_home/pages/screen/HomeScreen.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:pet_home/pages/screen/detailScreen.dart';
 import 'package:pet_home/configuration.dart';
 import 'package:pet_home/pages/screen/Profile.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pet_home/services/auth.dart';
 import 'package:bordered_text/bordered_text.dart';
 import 'package:pet_home/pages/screen/DescendantPage/adoption_detail.dart';
@@ -154,6 +149,14 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Center(
         child: Column(
           children: [
+            SizedBox(
+              height: 10,
+            ),
+            CircleAvatar(
+              radius: 100,
+              backgroundImage: AssetImage('images/icon.png'),
+              backgroundColor: Colors.amber,
+            ),
             //search bar
             Container(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),

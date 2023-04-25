@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:pet_home/pages/wrapper.dart';
+import 'package:pet_home/pages/screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:pet_home/services/auth.dart';
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primaryColor: Colors.amberAccent.shade100,
         ),
-        home: Wrapper(),
+        home: SplashScreen(),
       ),
     );
   }

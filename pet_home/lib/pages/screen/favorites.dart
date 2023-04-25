@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:pet_home/pages/screen/DescendantPage/adoption_detail.dart';
 import 'package:pet_home/pages/screen/HomeScreen.dart';
 import 'package:pet_home/pages/screen/Profile.dart';
-import 'package:pet_home/pages/screen/detailScreen.dart';
 import 'package:pet_home/services/auth.dart';
 import 'package:bordered_text/bordered_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -83,65 +82,70 @@ class _favoritesState extends State<favorites> {
             ),
             SizedBox(height: 20),
             Container(
-              child: Expanded(
-                child: StreamBuilder<QuerySnapshot>(
-                  stream: _stream,
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    //Check error
-                    if (snapshot.hasError) {
-                      return Center(
-                          child: Text('Some error occurred ${snapshot.error}'));
-                    }
-                    //Check if data arrived
-                    if (snapshot.hasData) {
-                      //get the data
-                      QuerySnapshot querySnapshot = snapshot.data;
-                      List<QueryDocumentSnapshot> documents =
-                          querySnapshot.docs;
+                child: Expanded(
+                  child: StreamBuilder<QuerySnapshot>(
+                    stream: _stream,
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      //Check error
+                      if (snapshot.hasError) {
+                        return Center(
+                            child: Text('Some error occurred ${snapshot.error}'));
+                      }
+                      //Check if data arrived
+                      if (snapshot.hasData) {
+                        //get the data
+                        QuerySnapshot querySnapshot = snapshot.data;
+                        List<QueryDocumentSnapshot> documents =
+                            querySnapshot.docs;
 
-                      List<Map> items = documents.map((e) => {
-                        'id': e.id,
-                        'name': e['name'],
-                        'gender': e['gender'],
-                        'breed': e['breed'],
-                        'age': e['age'],
-                        'location': e['location'],
-                        'image':e['image']
-                      }).toList();
+                        List<Map> items = documents.map((e) => {
+                          'id': e.id,
+                          'name': e['name'],
+                          'gender': e['gender'],
+                          'breed': e['breed'],
+                          'age': e['age'],
+                          'location': e['location'],
+                          'image':e['image']
+                        }).toList();
 
-                      //Display the list
-                      return ListView.builder(
-                          itemCount: items.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            //Get the item at this index
-                            Map thisItem = items[index];
-                            //REturn the widget for the list items
-                            return SizedBox(
-                              child: ListTile(
-                                contentPadding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 16.0),
-                                title: Text('${thisItem['name']}'),
-                                subtitle: Text(
-                                  'Breed: ${thisItem['breed']}',
+                        //Display the list
+                        return ListView.builder(
+                            itemCount: items.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              //Get the item at this index
+                              Map thisItem = items[index];
+                              //REturn the widget for the list items
+                              return SizedBox(
+                                child: ListTile(
+                                  contentPadding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 16.0),
+                                  title: Text('${thisItem['name']}'),
+                                  subtitle: Text(
+                                    'Breed: ${thisItem['breed']}',
+                                  ),
+                                  leading: Container(
+                                    height: 100,
+                                    width: 80,
+                                    child: Image.network('${thisItem['image']}'),
+                                  ),
+                                  onTap: () {
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (context) => AdoptionDetails(thisItem['id'])));
+                                  },
+                                  trailing: IconButton(
+                                    icon: Icon(Icons.delete),
+                                    onPressed: () {
+                                      _reference.doc(thisItem['id']).delete();
+                                    },
+                                  ),
                                 ),
-                                leading: Container(
-                                  height: 100,
-                                  width: 80,
-                                  child: Image.network('${thisItem['image']}'),
-                                ),
-                                onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => AdoptionDetails(thisItem['id'])));
-                                },
-                              ),
-                            );
-                          });
-                    }
-
-                    //Show loader
-                    return Center(child: CircularProgressIndicator());
-                  },
+                              );
+                            });
+                      }
+                      //Show loader
+                      return Center(child: CircularProgressIndicator());
+                    },
+                  ),
                 ),
-              ),
             ),
           ],
         ),
